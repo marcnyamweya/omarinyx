@@ -1,4 +1,4 @@
 module.exports = {
   moduleDirectories: ['.', 'node_modules'],
-  setupFilesAfterEnv: ['<rootDir>/.storybook/jest.setup.js']
+  setupFilesAfterEnv: ['<rootDir>/jest.setup.js']
 };

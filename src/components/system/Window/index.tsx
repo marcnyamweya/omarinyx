@@ -1,35 +1,34 @@
-import { useCallback } from "react";
-import 
+import { useCallback } from 'react';
+import { type ComponentProcessProps } from '../Apps/RenderComponents';
 
+const Window: FC<ComponentProcessProps> = ({ id, children }) => {
+  const {
+    linkElement,
+    processes: { [id]: process },
+  } = useProcesses();
+  const {
+    backgroundBlur,
+    backgroundColor,
+    Component,
+    hideTitlebar,
+    peekElement,
+  } = process || {};
+  const { foregroundId } = useSession();
+  const isForeground = foregroundId === id;
+  const { zIndex, ...focusableProps } = useFocusable(id);
+  const windowTTransitions = useWindowTransitions(id);
+  const linkViewportEntry = useCallback(
+    (viewportEntry: HTMLDivElement) => {
+      if (Component && !peekElement && viewportEntry) {
+        linkElement(id, 'peekElement', viewportEntry);
+      }
+    },
+    [Component, id, linkElement, peekElement]
+  );
 
-const Window: FC<CompomentProcessProps> = ({ id, children }) => {
-    const {
-        linkElement,
-        processes:{[id]: process},
-    } = useProcesses();
-    const {
-        backgroundBlur,
-        backgroundColor,
-        Component,
-        hideTitlebar,
-        peekElement,
-    } = process || {};
-    const {foregroundId} = useSession();
-    const isForeground = foregroundId === id;
-    const {zIndex, ...focusableProps} = useFocusable(id);
-    const windowTTransitions = useWindowTransitions(id);
-    const linkViewportEntry = useCallback(
-        (viewportEntry: HTMLDivElement) => {
-            if(Component && !peekElement && viewportEntry) {
-                linkElement(id, "peekElement", viewportEntry);
-            }
-        },
-        [Component, id, linkElement, peekElement]
-    );
-
-    return (
-        <RndWindow id={id} zIndex={zIndex}>
-         <StyledWindow
+  return (
+    <RndWindow id={id} zIndex={zIndex}>
+      <StyledWindow
         $backgroundBlur={backgroundBlur}
         $backgroundColor={backgroundColor}
         $isForeground={isForeground}
@@ -41,8 +40,8 @@ const Window: FC<CompomentProcessProps> = ({ id, children }) => {
           {children}
         </StyledPeekViewport>
       </StyledWindow>
-        </RndWindow> 
-    );
+    </RndWindow>
+  );
 };
 
 export default Window;
